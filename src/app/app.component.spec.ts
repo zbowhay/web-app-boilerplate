@@ -1,7 +1,14 @@
 import test from 'ava';
 
+import { AppComponent } from './app.component';
+
+const app = new AppComponent();
+
 test('Title is \'App Component\'!', (t) => {
-  const actual = 'App Component!';
   const expected = 'App Component!';
-  t.is(actual, expected);
-})
+  t.is(app.title, expected);
+});
+
+test(`Title is 'this should fail'`, (t) => {
+  t.is(app.title, 'this should fail');
+});
