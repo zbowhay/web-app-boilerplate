@@ -2,7 +2,7 @@ import test from 'ava';
 
 import { AppComponent } from './app.component';
 
-const app = new AppComponent();
+const app = new AppComponent(null);
 
 test('Title is \'App Component\'!', (t) => {
   const expected = 'App Component!';

@@ -39,6 +39,13 @@ module.exports = {
       {
         test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/,
         loader: 'file-loader'
+      },
+      {
+        test: /.ico$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]'
+        }
       }
     ]
   },
@@ -51,6 +58,9 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     port: 3000,
+    proxy: {
+      '/api': 'http://localhost:3001'
+    },
     compress: false,
     historyApiFallback: true,
     https: false,

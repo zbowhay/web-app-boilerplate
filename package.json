@@ -4,8 +4,9 @@
   "description": "Boilerplate for Web Applications using Angular 5, Typescript, and Webpack",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "build:dev": "webpack --config webpack.dev.js",
+    "build": "npm run clean && webpack --config webpack.prod.js",
+    "build:dev": "npm run clean && webpack --config webpack.dev.js",
+    "clean": "rimraf dist",
     "serve": "webpack-dev-server --hot --config webpack.dev.js",
     "start": "npm run build && node server.js",
     "test": "tsc && ava **/*.spec.js"
@@ -27,6 +28,7 @@
     "express": "^4.16.2",
     "morgan": "^1.9.0",
     "reflect-metadata": "^0.1.10",
+    "request": "^2.83.0",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.18"
   },

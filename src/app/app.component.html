@@ -1,4 +1,10 @@
 <div class="center">
   <h1>{{title}}</h1>
   <i class="fa fa-camera-retro fa-5x"></i>
+  <h3>Example Data from Dark Sky Weather API</h3>
+  <p *ngIf="dallasForecast">
+    {{dallasForecast.lat}}
+    {{dallasForecast.lon}}
+    {{dallasForecast.timezone}}
+  </p>
 </div>
