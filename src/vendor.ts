@@ -1,5 +1,5 @@
 // Not a vendor require, but I like it here.
-require('./app.css');
+require('./assets/app.css');
 require('./assets/favicon.ico');
 
 // Third Party Libraries / Assets

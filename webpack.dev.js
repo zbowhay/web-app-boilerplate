@@ -3,6 +3,7 @@ const isProd = (process.env.NODE_ENV === 'production');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const helpers = require('./config/helpers.js');
 
 
 module.exports = {
@@ -17,13 +18,13 @@ module.exports = {
     filename: '[name].bundle.js'
   },
   resolve: {
-    extensions: [ '.ts', '.tsx', '.js', '.css' ]
+    extensions: [ '.ts', '.js', '.css' ]
   },
   module: {
     loaders: [
       { 
         test: /\.tsx?$/,
-        loaders: [ 'angular2-template-loader', 'ts-loader', ], // something odd here https://github.com/TheLarkInn/angular2-template-loader/issues/19
+        loaders: [ 'ts-loader', 'angular2-template-loader'],
         exclude: [ /\.(spec|e2e)\.ts$/ ]
       },
       {
@@ -32,13 +33,17 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: 'css-loader'
-        })
+        exclude: helpers.root('src', 'app'),
+        loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader?sourceMap' })
       },
       {
-        test: /\.(eot|svg|ttf|woff(2)?)(\?v=\d+\.\d+\.\d+)?/,
-        loader: 'file-loader'
+        test: /\.css$/,
+        include: helpers.root('src', 'app'),
+        loaders: [ 'css-to-string-loader', 'css-loader' ]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot)$/,
+        loader: 'file-loader?name=assets/[name].[hash].[ext]'
       },
       {
         test: /.ico$/,
@@ -50,10 +55,19 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+      /angular(\\|\/)core(\\|\/)@angular/,
+      helpers.root('./src'), // location of your src
+      {} // a map of your routes
+    ),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['app', 'vendor', 'polyfills']
+    }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
-    new ExtractTextPlugin('styles.css')
+    new ExtractTextPlugin('[name].css')
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
